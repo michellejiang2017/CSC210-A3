@@ -1,0 +1,307 @@
+import org.w3c.dom.Node;
+
+/**
+ * Class to implement a singly linked list
+ *
+ * @author Michelle Jiang
+ * @version Spring 2026
+ */
+
+
+class SLL<T> implements Iterable<T>> {
+    
+    public Iterator<T> iterator() {
+    return new SLLIterator();
+    }
+    
+    private class SLLIterator implements Iterator<T> {
+    public boolean hasNext() { /* ... */ }
+    public T next() { /* ... */ }
+    }
+
+    /**
+     * The head of the list. If the list is empty, head is null.
+     */
+    public NodeSL<T> head; 
+    /**
+     * The size of the list. If the list is empty, size is 0.
+     */
+    public int size; 
+
+    /**
+     * Constructor to create an empty list. Sets head to null and size to 0.
+     */
+    public SLL() {
+        this.head = null;
+        this.size = 0;
+    }
+
+    /** Copy Constructor 
+     * @param other the SLL to be copied
+    */
+    public SLL(SLL<T> other) { 
+        if (other.head == null) {
+            this.head = null;
+            this.size = 0;
+            return; 
+        }
+        this.head = new NodeSL<T>(other.head.getData(), null);
+        NodeSL<T> currentNode = this.head;
+        NodeSL<T> otherNode = other.head.getNext();
+        while (otherNode != null) {
+            currentNode.setNext(new NodeSL<T>(otherNode.getData(), null));
+            currentNode = currentNode.getNext();
+            otherNode = otherNode.getNext();
+        }
+        this.size = other.size;
+    }
+
+    /**
+     * Queries number of elements in list. If empty, returns zero. 
+     * @return size of list. 
+     */
+    public int size() { 
+        return this.size; 
+    }
+
+    /**
+     * Accesses element at a given index. 
+     * @param index the index to query
+     * @throws IndexOutOfBoundsException if the index is less than 0 or greater than or equal to the size of the list
+     * @return value at specified index
+     */
+    public T get(int index) { 
+        return this.getNode(index).getData(); 
+    }
+
+    /**
+     * Sets the value at the given index
+     * @param index the index whose value is changed
+     * @param value the value to change the index to 
+     * @return the item that was previously at this position
+     * @throws IndexOutOfBoundsException if the index is less than 0 or greater than or equal to the size of the list
+     */
+    public T set(int index, T value) {
+        T prevValue = this.get(index);
+        NodeSL<T> node = this.getNode(index);
+        node.setData(value);
+        return prevValue; 
+    }
+
+    /**
+     * Adds element to existing list. Note: If the element type isn't the same as the list type, the code will not compile. 
+     * @param index of where the new element should be added
+     * @param value the element to be added to the ListADT object
+     * @throws IndexOutOfBoundsException if the index is less than 0 or greater than or equal to the size of the list
+     */
+    public void add(int index, T value) { 
+        if (index == 0) {
+            this.addFirst(value);
+            return;
+        }
+
+        if (index == size) {
+            this.addLast(value);
+            return;
+        }
+        NodeSL<T> prev = getNode(index - 1);
+        prev.setNext(new NodeSL<T>(value, prev.getNext()));
+        this.size++;
+    }
+
+    /**
+     * Removes item from list at given index. 
+     * @param index the index to query
+     * @throws IndexOutOfBoundsException if the index is less than 0 or greater than or equal to the size of the list
+     * @return the element at the index specified
+     */
+    public T remove(int index) {
+        if (index < 0 || index >= this.size) {
+            throw new IndexOutOfBoundsException();
+        }
+        if (index == 0) {
+            return removeFirst();
+        }
+        NodeSL<T> prev = getNode(index - 1);
+        NodeSL<T> target = prev.getNext();
+        T data = target.getData();
+        prev.setNext(target.getNext());
+        size--;
+        return data;
+    }
+
+    /**
+     * Converts the Linked List to a string.
+     * @return Linked List in String type
+     */
+    public String toString() {
+        String returnString = "["; 
+        if (this.head == null) {
+            returnString += "]"; 
+            return returnString;
+        }
+        NodeSL<T> item;
+        for ( item = this.head; item.getNext() != null; item = item.getNext()) {
+            returnString += item.getData() + ", ";
+        }
+        returnString += item.getData() + "]";
+        return returnString;
+    }
+    
+    /**
+     * Tests if a list is empty or not. 
+     * @return true if empty, false if has elements
+     */
+    public boolean isEmpty() { 
+        if (this.size() == 0) { 
+            return true; 
+        }
+        return false; 
+    }
+
+    /**
+     * Helper method to get the node at a given index.
+     * @param index the index to query
+     * @throws IndexOutOfBoundsException if the index is less than 0 or greater than or equal to the size of the list
+     * @return the node at the index specified
+     */
+    public NodeSL<T> getNode(int index) {
+        if (index < 0 || index >= this.size) {
+            throw new IndexOutOfBoundsException();
+        }
+        NodeSL<T> currentNode = this.head;
+        for (int i=0; i<index; i++) {
+            currentNode = currentNode.getNext();
+        }
+        return currentNode;
+    }
+
+    /**
+     * Gets the head (first element) of the list.
+     * @return the head node of the list
+     */
+    public NodeSL<T> getHead() {
+        return this.head;
+    }
+
+    /**
+     * Gets the tail (last element) of the list.
+     * @return the tail node of the list
+     */
+    public NodeSL<T> getTail() {
+        if (this.head == null) { 
+            return null; 
+        }
+        NodeSL<T> currentNode = this.head;
+        while (currentNode.getNext() != null) {
+            currentNode = currentNode.getNext();
+        }
+        return currentNode;
+    }
+
+    /**
+     * Adds element to the front of the list. Note: If the element type isn't the same as the list type, the code will not compile.
+     * @param value the element to be added to the front of the ListADT object
+     */
+    public void addFirst(T value) {
+        NodeSL<T> newHead = new NodeSL<T>(value, this.head); 
+        this.head = newHead;
+        this.size++;
+    }
+
+    /**
+     * Adds element to the end of the list. Note: If the element type isn't the same as the list type, the code will not compile.
+     * @param value the element to be added to the end of the ListADT object
+     */
+    public void addLast(T value) { 
+        NodeSL<T> newTail = new NodeSL<T>(value, null);
+        if (this.head == null) {
+            this.head = newTail;
+        } else {
+            NodeSL<T> tail = this.getTail();
+            tail.setNext(newTail);
+        }
+        this.size++;
+    }
+
+    /**
+     * Removes the first element from the list and sets the second element as the new head. 
+     * @return the original first element
+     */
+    public T removeFirst() { 
+        if (this.head == null) { 
+            throw new IllegalStateException();
+        }
+        T data = this.head.getData();
+        this.head = this.head.getNext();
+        this.size--;
+        return data;
+    }
+
+    /**
+     * Removes the last element from the list and sets the second last element as the new tail. 
+     * @return the original last element
+     */
+    public T removeLast() { 
+        if (this.head == null) { 
+            throw new IllegalStateException();
+        } else if (this.size == 1) {
+            T data = this.head.getData();
+            this.head = null;
+            this.size--;
+            return data;
+        }
+        NodeSL<T> newTail = this.getNode(this.size-2);
+        T data = newTail.getNext().getData();
+        newTail.setNext(null);
+        this.size--;
+        return data;
+    }
+
+    /**
+     * Adds element after a given index. 
+     * @param node the node after which the new element should be added
+     * @param value the element to be added to the ListADT object
+     */
+    public void addAfter(NodeSL<T> node, T value) { 
+        if (head == null) {
+        head = new NodeSL<>(value, null);
+        size = 1;
+        return; 
+        }
+
+        if (node == null) {
+            addFirst(value);
+            return; 
+        }
+        NodeSL<T> nextNode = node.getNext();
+        NodeSL<T> newNode = new NodeSL<T>(value, nextNode);
+        node.setNext(newNode);
+        this.size++;
+    }
+
+    /**
+     * Removes all elements after a given node. 
+     * @param node the node after which elements should be removed.
+     * @return the element that was removed
+     */
+    public T removeAfter(NodeSL<T> node) { 
+        if (head == null) {
+            throw new IllegalStateException();
+        }
+
+        if (node == null) {
+            return removeFirst();
+        }
+
+        
+        NodeSL<T> target = node.getNext();
+        if (target == null) { 
+            throw new IllegalStateException();
+        }
+        node.setNext(target.getNext());
+        size--;
+        return target.getData();
+    }
+
+}

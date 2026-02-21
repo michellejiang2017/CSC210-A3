@@ -2,7 +2,7 @@
 
 ## Basic Information
 
-Your name:
+Your name: Michelle Jiang 
 
 Other students you worked with, including TAs:
 
