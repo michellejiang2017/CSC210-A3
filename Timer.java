@@ -10,6 +10,7 @@ public class Timer {
     private static final int REPS = 500;
     private static final int WARMUP = 200;
 
+    // Note: timings under 100 ns are noisy; focus on trends, not absolute values.
     public static void main(String[] args) {
         System.out.println("Copy vs Transfer Split (lightweight benchmark)");
         System.out.println("Each timing is an average over " + REPS + " ops.");

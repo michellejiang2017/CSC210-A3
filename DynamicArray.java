@@ -8,18 +8,23 @@ import java.util.NoSuchElementException;
  * @author Michelle Jiang
  */
 public class DynamicArray<T> implements Iterable<T> {
+    // The underlying array that holds the elements of the DynamicArray. 
     T[] data; 
+    // The number of elements currently in the DynamicArray. 
     int size; 
 
+    // Constructs an empty DynamicArray with an initial capacity of 10.
     public DynamicArray() {
         this(10); 
     }
-    
+
+    // Constructs an empty DynamicArray with the given initial capacity.
     public DynamicArray(int capacity) {
         this.data = this.makeArray(capacity); 
         this.size = 0; 
     }
 
+    // Constructs a new DynamicArray that is a copy of the given DynamicArray.
     public DynamicArray(DynamicArray<T> sourceArray) {
         this.data = this.makeArray(sourceArray.data.length);
         for (int i=0; i<sourceArray.size; i++) {
@@ -53,7 +58,7 @@ public class DynamicArray<T> implements Iterable<T> {
         } else {
             if (size == this.data.length) {
                 T[] dataCopy = this.makeArray(size*2+1);
-                for (int i=0;i<size;i++) {
+                for (int i=0; i<size; i++) {
                     dataCopy[i] = this.data[i];
                 }
                 data = dataCopy;
@@ -141,7 +146,7 @@ public class DynamicArray<T> implements Iterable<T> {
      */
     public DynamicArray<T> append(DynamicArray<T> addArray) {
         DynamicArray<T> newArray = new DynamicArray<T>(addArray.size+this.size());
-        for (int i=0;i<this.size();i++) {
+        for (int i=0; i<this.size(); i++) {
             newArray.data[i] = this.data[i];
         }
         for (int i=0; i<addArray.size; i++) {
@@ -163,7 +168,7 @@ public class DynamicArray<T> implements Iterable<T> {
         }
         DynamicArray<T> newArray = new DynamicArray<T>(addArray.size+this.size());
  
-        for (int i=0;i<index;i++) {
+        for (int i=0; i<index; i++) {
             newArray.data[i] = this.data[i];
         }
     
