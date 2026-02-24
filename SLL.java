@@ -1,4 +1,6 @@
 import org.w3c.dom.Node;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Class to implement a singly linked list
@@ -8,16 +10,7 @@ import org.w3c.dom.Node;
  */
 
 
-class SLL<T> implements Iterable<T>> {
-    
-    public Iterator<T> iterator() {
-    return new SLLIterator();
-    }
-    
-    private class SLLIterator implements Iterator<T> {
-    public boolean hasNext() { /* ... */ }
-    public T next() { /* ... */ }
-    }
+class SLL<T> implements Iterable<T> {
 
     /**
      * The head of the list. If the list is empty, head is null.
@@ -302,6 +295,50 @@ class SLL<T> implements Iterable<T>> {
         node.setNext(target.getNext());
         size--;
         return target.getData();
+    }
+
+    /**
+     * Returns an iterator for the list. The iterator should iterate through the elements of the list in order from head to tail.
+     */
+    public Iterator<T> iterator() {
+    return new SLLIterator();
+    }
+    
+    /**
+     * Private inner class to implement the iterator for the SLL. The iterator should iterate through the elements of the list in order from head to tail.
+     */
+    private class SLLIterator implements Iterator<T> {
+        //Current node that the iterator is at. 
+        private NodeSL<T> current;
+
+        /**
+         * Constructor for SLLIterator. Initializes current to head of the list.
+         */
+        public SLLIterator() {
+            this.current = this.head;
+        }
+        
+        /**
+         * Returns true if there are more elements to iterate through, false otherwise.
+         * @return true if there are more elements to iterate through, false otherwise
+         */
+        public boolean hasNext() {
+            return this.current != null;
+        }
+
+        /**
+         * Returns the next element in the iteration and advances the iterator. If there are no more elements to iterate through, throws a NoSuchElementException.
+         * @return the next element in the iteration
+         */
+        public T next() {
+            if (this.hasNext()) {
+                T data = this.current.getData();
+                this.current = this.current.getNext();
+                return data;
+            } else {
+                throw new NoSuchElementException();
+            }
+        }
     }
 
 }

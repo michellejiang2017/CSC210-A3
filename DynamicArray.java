@@ -1,3 +1,6 @@
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 /**
  * A Dynamic Array is like a list that is backed by an array. It allows adding, removing, and accessing elements in a way similar to an ArrayList.
  *
@@ -195,5 +198,48 @@ public class DynamicArray<T> implements Iterable<T> {
     @SuppressWarnings("unchecked")
     private T[] makeArray(int capacity) {
         return (T[]) new Object[capacity];
+    }
+
+    /**
+     * Returns an iterator for the list. The iterator should iterate through the elements of the list in order from first to last.
+     */
+    public Iterator<T> iterator() {
+    return new DynamicArrayIterator();
+    }
+    
+    /**
+     * Private inner class to implement the iterator for the DynamicArray. The iterator should iterate through the elements of the array in order from index 0 to size-1.
+     */
+    private class DynamicArrayIterator implements Iterator<T> {
+        private int currentIndex;
+        
+        /**
+         * Constructor for DynamicArrayIterator.
+         */
+        public DynamicArrayIterator() {
+            this.currentIndex = 0;
+        }
+
+        /**
+         * Returns true if there are more elements to iterate through, false otherwise.
+         * @return true if there are more elements to iterate through, false otherwise
+         */
+        public boolean hasNext() {
+            return this.currentIndex < this.size;
+        }
+
+        /**
+         * Returns the next element in the iteration and advances the iterator. If there are no more elements to iterate through, throws a NoSuchElementException.
+         * @return the next element in the iteration
+         */
+        public T next() {
+            if (this.hasNext()) {
+                T data = this.data[this.currentIndex];
+                this.currentIndex++;
+                return data;
+            } else {
+                throw new NoSuchElementException();
+            }
+        }
     }
 }
