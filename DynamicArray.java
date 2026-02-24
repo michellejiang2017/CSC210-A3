@@ -230,7 +230,7 @@ public class DynamicArray<T> implements Iterable<T> {
             throw new IndexOutOfBoundsException();
         }
         if (index == this.size) {
-            return new DynamicArray<T>();
+            return new DynamicArray<T>(0);
         }
         if (index == 0) {
             DynamicArray<T> newArray = new DynamicArray<T>(this.size);
@@ -278,7 +278,7 @@ public class DynamicArray<T> implements Iterable<T> {
          * @return true if there are more elements to iterate through, false otherwise
          */
         public boolean hasNext() {
-            return this.currentIndex < this.size;
+            return this.currentIndex < DynamicArray.this.size;
         }
 
         /**
@@ -287,7 +287,7 @@ public class DynamicArray<T> implements Iterable<T> {
          */
         public T next() {
             if (this.hasNext()) {
-                T data = this.data[this.currentIndex];
+                T data = DynamicArray.this.data[this.currentIndex];
                 this.currentIndex++;
                 return data;
             } else {

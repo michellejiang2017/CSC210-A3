@@ -311,13 +311,12 @@ class SLL<T> implements Iterable<T> {
             return newList;
         }
         NodeSL<T> current = getNode(index);
-        NodeSL<T> prev = getNode(index - 1);
-        newList.head = new NodeSL<T> (current.getData());
+        newList.head = new NodeSL<T> (current.getData(), null);
         current = current.getNext();
         NodeSL<T> newTail = newList.head; 
 
         while (current != null) {
-            NodeSL<T> newNode = new NodeSL<>(current.getData());
+            NodeSL<T> newNode = new NodeSL<>(current.getData(), null);
             newTail.setNext(newNode);
             newTail = newNode;
             current = current.getNext();
@@ -373,7 +372,7 @@ class SLL<T> implements Iterable<T> {
          * Constructor for SLLIterator. Initializes current to head of the list.
          */
         public SLLIterator() {
-            this.current = this.head;
+            this.current = SLL.this.head;
         }
         
         /**

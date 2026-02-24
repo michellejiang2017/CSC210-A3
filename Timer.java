@@ -41,7 +41,7 @@ public class Timer {
     }
 
     private static DynamicArray<Integer> buildDynamicArray(int n) {
-        DynamicArray<Integer> arr = new DynamicArray<>();
+        DynamicArray<Integer> arr = new DynamicArray<>(0);
         for (int i = 0; i < n; i++) {
             arr.add(i, i);
         }
