@@ -11,6 +11,10 @@ public class DynamicArray<T> implements Iterable<T> {
     T[] data; 
     int size; 
 
+    public DynamicArray() {
+        this(10); 
+    }
+    
     public DynamicArray(int capacity) {
         this.data = this.makeArray(capacity); 
         this.size = 0; 
