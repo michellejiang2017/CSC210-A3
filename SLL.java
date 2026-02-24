@@ -298,7 +298,65 @@ class SLL<T> implements Iterable<T> {
     }
 
     /**
+     * Splits the list into two lists at a given index. The original list should remain unchanged, and the new list should contain the elements from index to size-1. Note: If the index is out of bounds, an IndexOutOfBoundsException is thrown.
+     * @param index the index at which to split the list
+     * @return a new SLL containing the elements from index to size-1
+     */
+    public SLL<T> splitCopy(int index) {
+        if (index < 0 || index > this.size) {
+            throw new IndexOutOfBoundsException();
+        }
+        SLL<T> newList = new SLL<T>();
+        if (index == this.size) {
+            return newList;
+        }
+        NodeSL<T> current = getNode(index);
+        NodeSL<T> prev = getNode(index - 1);
+        newList.head = new NodeSL<T> (current.getData());
+        current = current.getNext();
+        NodeSL<T> newTail = newList.head; 
+
+        while (current != null) {
+            NodeSL<T> newNode = new NodeSL<>(current.getData());
+            newTail.setNext(newNode);
+            newTail = newNode;
+            current = current.getNext();
+        }
+        newList.size = this.size - index;
+        return newList; 
+    }
+
+    /**
+     * Splits the list into two lists at a given index. The original list should contain the elements from index 0 to index-1, and the new list should contain the elements from index to size-1. Note: If the index is out of bounds, an IndexOutOfBoundsException is thrown.
+      * @param index the index at which to split the list
+      * @return a new SLL containing the elements from index to size-1
+     */
+    public SLL<T> splitTransfer(int index) {
+        if (index < 0 || index > this.size) {
+            throw new IndexOutOfBoundsException();
+        }
+        SLL<T> newList = new SLL<T>();
+        if (index == 0) {
+            newList.head = this.head;
+            newList.size = this.size;
+            this.head = null;
+            this.size = 0;
+            return newList;
+        }
+        if (index == this.size) {
+            return new SLL<T>();
+        }
+        NodeSL<T> prev = getNode(index - 1);
+        newList.head = prev.getNext();
+        newList.size = this.size - index;
+        prev.setNext(null);
+        this.size = index;
+        return newList;
+    }
+
+    /**
      * Returns an iterator for the list. The iterator should iterate through the elements of the list in order from head to tail.
+     * @return an iterator for the list
      */
     public Iterator<T> iterator() {
     return new SLLIterator();

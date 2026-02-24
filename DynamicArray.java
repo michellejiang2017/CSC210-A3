@@ -201,7 +201,60 @@ public class DynamicArray<T> implements Iterable<T> {
     }
 
     /**
+     * Returns a new DynamicArray containing the elements of this array from the given index to the end of the array. The original array should not be modified.
+     * @param index the index from which to start copying elements
+     * @return a new DynamicArray containing the elements of this array from the given index to the end of the array
+     */
+    public DynamicArray<T> splitCopy(int index) { 
+        if (index < 0 || index > this.size) {
+            throw new IndexOutOfBoundsException();
+        }
+        if (index == this.size) {
+            return new DynamicArray<T>(0);
+        }
+        DynamicArray<T> newArray = new DynamicArray<T>(this.size - index);
+        for (int i=index; i<this.size; i++) {
+            newArray.data[i-index] = this.data[i];
+        }
+        newArray.size = this.size - index;
+        return newArray;
+    }
+
+    /**
+     * Returns a new DynamicArray containing the elements of this array from the given index to the end of the array. The original array is modified to remove these elements.
+     * @param index the index from which to start transferring elements
+     * @return a new DynamicArray containing the elements of this array from the given index to the end of the array
+     */
+    public DynamicArray<T> splitTransfer(int index) {
+        if (index < 0 || index > this.size) {
+            throw new IndexOutOfBoundsException();
+        }
+        if (index == this.size) {
+            return new DynamicArray<T>();
+        }
+        if (index == 0) {
+            DynamicArray<T> newArray = new DynamicArray<T>(this.size);
+            for (int i=0; i<this.size; i++) {
+                newArray.data[i] = this.data[i];
+                this.data[i] = null;
+            }
+            newArray.size = this.size;
+            this.size = 0;
+            return newArray;
+        }
+        DynamicArray<T> newArray = new DynamicArray<T>(this.size - index);
+        for (int i=index; i<this.size; i++) {
+            newArray.data[i-index] = this.data[i];
+            this.data[i] = null;
+        }
+        newArray.size = this.size - index;
+        this.size = index;
+        return newArray;
+    }
+
+    /**
      * Returns an iterator for the list. The iterator should iterate through the elements of the list in order from first to last.
+     * @return an iterator for the list
      */
     public Iterator<T> iterator() {
     return new DynamicArrayIterator();
