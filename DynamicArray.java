@@ -8,23 +8,35 @@ import java.util.NoSuchElementException;
  * @author Michelle Jiang
  */
 public class DynamicArray<T> implements Iterable<T> {
-    // The underlying array that holds the elements of the DynamicArray. 
+    /**
+     * The array that holds the elements of the DynamicArray.
+     */
     T[] data; 
-    // The number of elements currently in the DynamicArray. 
+    /**
+     * The number of elements currently in the DynamicArray. 
+     */
     int size; 
 
-    // Constructs an empty DynamicArray with an initial capacity of 10.
+    /**
+     * Constructs an empty DynamicArray with an initial capacity of 10.
+     */
     public DynamicArray() {
         this(10); 
     }
 
-    // Constructs an empty DynamicArray with the given initial capacity.
+    /**
+     * Constructs an empty DynamicArray with the given initial capacity.
+     * @param capacity the initial capacity of the DynamicArray
+     */
     public DynamicArray(int capacity) {
         this.data = this.makeArray(capacity); 
         this.size = 0; 
     }
 
-    // Constructs a new DynamicArray that is a copy of the given DynamicArray.
+    /**
+     * Constructs a new DynamicArray that is a copy of the given DynamicArray.
+     * @param sourceArray the DynamicArray to be copied
+     */ 
     public DynamicArray(DynamicArray<T> sourceArray) {
         this.data = this.makeArray(sourceArray.data.length);
         for (int i=0; i<sourceArray.size; i++) {
